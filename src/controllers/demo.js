@@ -35,23 +35,37 @@ angular.module('DemoApp', [ 'angular-carousel'])
     $scope.next = function() {
     	goRight();
     };
+    $scope.hoverItem = function(hovered){
+        if (hovered) {
+            cancelPlay();
+            console.log('hovered');
+        }
+        else {
+            console.log('leave');
+
+        	carouselTimeout = $timeout(autoPlay, 3000);
+        }
+    };
     function goRight(){
         $scope.slideIndex = ($scope.slideIndex+1) % $scope.slides4.length;
     };
     function goLeft(){
         $scope.slideIndex = ($scope.slideIndex-1) % $scope.slides4.length;
     };
-    function autoplay() {
+    function autoPlay() {
     	goRight();
-        carouselTimeout = $timeout(autoplay, 3000);
+        carouselTimeout = $timeout(autoPlay, 3000);
     }
-    var carouselTimeout = $timeout(autoplay, 3000);
+    function cancelPlay(){
+		$timeout.cancel(carouselTimeout);
+    }
+    var carouselTimeout = $timeout(autoPlay, 3000);
     $scope.swipe = true;
     $scope.toggleSwipe = function() {
         $scope.swipe = !$scope.swipe;
     }
     $scope.stop = function(){
-        $timeout.cancel(carouselTimeout);
+        cancelPlay();
     }
     
 
